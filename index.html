@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Gussing game</title>
+    <style>
+        body {
+
+            background-image: url('https://www.sciencenews.org/wp-content/uploads/2018/05/050718_EC_numbers_feat.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
+
+        .center {
+            background: rgba(140, 157, 177, 0.60);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.6);
+            backdrop-filter: blur(8.0px);
+            -webkit-backdrop-filter: blur(8.0px);
+            border-radius: 10px;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+
+        }
+
+        input[type=text] {
+          
+     
+            width: 80%;
+            padding: 12px 20px;
+            margin: auto;
+            box-sizing: border-box;
+            border-radius:10px;
+           
+            
+        }
+        li{
+            color: rgb(228, 253, 0);
+            font-size: 18px;
+        }
+        h2{
+            color: rgb(22, 250, 1);
+            font-size: 25px;
+        }
+        h1{
+            color: rgb(250, 1, 1);
+            text-align: center;
+        }
+    </style>
+</head>
+<div class="center">
+    <h1>Guess The Number</h1>
+    <input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-6]/g,'');" / id="userNumber"
+        placeholder="Enter Number between 1-6 and click anywhere" onblur="gussing_game()" required>
+
+    <div>
+        <h2>Rules</h2>
+        <ul>
+            <li>A user can enter a number.</li>
+            <li>The system picks a random number from 1 to 6.</li>
+            <li>If the user's number is equal to a random number, user get 2 points.</li>
+            <li>If the user's number is different than the random number by 1, then user get 1 point.</li>
+            <li>Otherwise, give the user 0 points.</li>
+            <li>User story: The user can play the game as long as they want to.</li>
+        </ul>
+    </div>
+</div>
+
+<body>
+    <script>
+        function gussing_game() {
+
+
+            let userNumber = document.getElementById('userNumber').value;
+            if (userNumber == "") {
+                alert("Enter the value for play the game");
+            }
+            else {
+
+
+                const enterNumber = () => {
+                    return new Promise((resolve, reject) => {
+
+
+                        console.log(userNumber);
+                        const randomNumber = Math.floor(Math.random() * 6 + 1);
+                        console.log(randomNumber);
+
+                        if (userNumber == randomNumber) {
+                            // console.log("abc");
+                            // alert("You get 2 points");
+                            resolve({
+                                points: 2,
+                                randomNumber,
+                            });
+
+                        } else if (userNumber == randomNumber - 1 || userNumber == randomNumber + 1) {
+                            // console.log("ABC");
+                            // alert("You get 1 points");
+                            resolve({
+                                points: 1,
+                                randomNumber,
+                            });
+                        } else {
+                            // console.log("123");
+                            // alert("You get 0 points");
+                            resolve({
+                                points: 0,
+                                randomNumber,
+                            });
+
+                        }
+
+
+                    })
+
+                }
+                // enterNumber();
+
+
+                enterNumber()
+                    .then((value) => {
+                        // alert(value['points']);
+                        alert('Your input is : ' + userNumber +"\n" + 'Dice Number is : ' + value['randomNumber'] + "\n" + 'Your final Score is : ' + value['points']);
+                        continueGame();
+                    })
+                    .catch((error) => {
+                        console.log("Somthing went wrong Please Try again Thank You.....");
+
+                    })
+
+
+            }
+        }
+
+
+        const continueGame = () => {
+            return new Promise((resolve) => {
+                if (window.confirm("Do you want to continue the game ?")) {
+                    resolve(true);
+
+                } else {
+                    resolve(false);
+                    alert("Game Ends Thanks for your time.....");
+                    location.reload();
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>
